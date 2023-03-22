@@ -1,0 +1,9 @@
+# These are some examples of commnly ignored file patterns.
+# You should customize this list as application to your project. 
+# Learn more about .gitignore: 
+# https://www.atlassian.com/git/tutorials/saving-changes/gitignore
+
+# Node Artifact Files
+
+node_modules/
+dist/
