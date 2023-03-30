@@ -8,6 +8,7 @@
  ** Dev and Production Build
  ** Super Fast build algorithm
  ** Image Optimization
+ ** JS Optimization
  ** Caching while development
  ** Compression
  ** Compatible with older version of browser
@@ -15,7 +16,7 @@
  ** Port Number
  ** Consistent Hashing Algorithms
  ** Zero Config
- **
+ ** Tree Shaking : Removing Unwanted Code
  **
  */
 
@@ -28,16 +29,34 @@
 
 import React from "react";
 import ReactDOM from "react-dom/client";
-const heading = React.createElement("h1", { id: "title" }, "Namaste Everyone!");
 
-const heading2 = React.createElement(
-  "h2",
-  { id: "title" },
-  "Namaste Everyone!"
+// JSX => React.createElement => Object => HTML (DOM)
+
+// JSX : JSX is HTML like syntax but it is not html inside JavaScript. Babel understand JSX and convert it into normal HTML.
+// heading2 below is React element. React element is just an object.
+const heading = (
+  <h1 id="title" key="h2">
+    Namaste React
+  </h1>
 );
-const container = React.createElement("div", { id: "container" }, [
-  heading,
-  heading2,
-]);
+/*
+React Component: There are two types of React Component. 
+1) Functional Component: It is just a function. New Way of Writting Code. Name of component starts with capital letter but it is not mandatory. 
+   It is convention. It is good Practice. 
+2) Class Based Component: Always been existed since long time in react. Old way of writting Code. 
+*/
+
+// Functional Compnent
+const HeaderComponent = () => {
+  return (
+    <div>
+      {heading}
+      <h1>Namaste React Functional Component</h1>
+      <h2>This is a h2 tags</h2>
+    </div>
+  );
+};
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(container);
+
+root.render(<HeaderComponent />);
