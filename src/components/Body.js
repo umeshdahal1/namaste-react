@@ -1,19 +1,41 @@
 import { restaurantList } from "../constants";
 import RestaurantCard from "./RestaurantCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Shimmer from "./Shimmer";
 
 function filterData(searchText, restaurants) {
   const filterData = restaurants.filter((restaurants) =>
-    restaurants.data.name.includes(searchText)
+    restaurants?.data?.name?.toLowerCase()?.includes(searchText.toLowerCase())
   );
   return filterData;
 }
 
 const Body = () => {
-  const [restaurants, setRestaurant] = useState(restaurantList);
+  const [allRestaurants, setAllRestaurants] = useState([]);
+  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const [searchText, setSearchText] = useState("");
 
-  return (
+  useEffect(() => {
+    // API Call
+    getRestaurants();
+  }, []);
+
+  async function getRestaurants() {
+    const data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=19.0759837&lng=72.8776559&page_type=DESKTOP_WEB_LISTING");
+    const json = await data.json();
+    console.log(json);
+    // Optional Chaining
+    setAllRestaurants(json?.data?.cards[2]?.data?.data?.cards);
+    setFilteredRestaurants(json?.data?.cards[2]?.data?.data?.cards);
+  }
+
+  console.log("render")
+
+  // Not Render Component (Early Return)
+  if(!allRestaurants) return null;
+  if(filteredRestaurants?.length===0) return <h1>No Restaurants Match your Filter!!!</h1>
+
+  return (allRestaurants.length === 0) ? <Shimmer/> : (
     <>
       {
         <div className="search-container">
@@ -31,9 +53,9 @@ const Body = () => {
             className="search-btn"
             onClick={() => {
               //  Need to filter the data.
-              const data = filterData(searchText, restaurants);
+              const data = filterData(searchText, allRestaurants);
               // Update the  state - restaurants
-              setRestaurant(data);
+              setFilteredRestaurants(data);
             }}
           >
             Search
@@ -42,7 +64,7 @@ const Body = () => {
       }
 
       <div className="restraunt-list">
-        {restaurants.map((restaurant) => {
+        {filteredRestaurants.map((restaurant) => {
           return (
             <RestaurantCard {...restaurant.data} key={restaurant.data.id} />
           );
