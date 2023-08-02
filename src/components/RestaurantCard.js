@@ -1,17 +1,18 @@
 import { IMG_CDN_URL } from "../constants";
+import {AiTwotoneStar} from "react-icons/ai"
 
 const RestaurantCard = ({
   cloudinaryImageId,
   name,
   cuisines,
-  lastMileTravelString,
+  avgRating,
 }) => {
   return (
     <div className="card">
       <img src={IMG_CDN_URL + cloudinaryImageId} />
       <h2>{name}</h2>
       <h3>{cuisines.join(", ")}</h3>
-      <h4>{lastMileTravelString} minutes</h4>
+      <h4 >{avgRating} <AiTwotoneStar/> </h4>
     </div>
   );
 };
